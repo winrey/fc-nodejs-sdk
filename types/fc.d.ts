@@ -1,4 +1,8 @@
+/* eslint-disable @typescript-eslint/no-namespace */
+import { IncomingMessage } from "node:http"
 import stream, { EventEmitter } from "stream"
+
+// TODO: add more trigger type
 
 /**
  * Events, Triggers, Basic Structures like Context etc.
@@ -8,18 +12,18 @@ export namespace FC {
   /**
    * 普通云函数调用的请求头
    */
-  type TEvent = Buffer
+  export type TEvent = Buffer
 
   /**
    * STS鉴权
    */
-  type TCredentials = {
+  export type TCredentials = {
     accessKeyId: string,
     accessKeySecret: string,
     securityToken: string,
   }
 
-  type TFunctionInfo = {
+  export type TFunctionInfo = {
     /**
      * 函数名
      * example: 'my-func'
@@ -56,7 +60,7 @@ export namespace FC {
     initializationTimeout: number,
   }
 
-  type TServiceInfo = {
+  export type TServiceInfo = {
     /**
      * 服务名
      * example: 'my-func'
@@ -89,7 +93,7 @@ export namespace FC {
     versionId: string
   }
 
-  type TContext = {
+  export type TContext = {
     /**
      * 本次调用请求的唯一ID，您可以把它记录下来在出现问题的时候方便查询。
      * example: 'b1c5100f-819d-c421-3a5e-7782a27d8a33'
@@ -138,7 +142,7 @@ export namespace FC {
     tracing?: TTracingContext
   }
 
-  type TData = Buffer | object | string | any
+  export type TData = Buffer | object | string | any
 
   /**
    * @param err 如果调用时error不为空，则函数返回HandledInvocationError，否则返回data的内容。
@@ -147,7 +151,7 @@ export namespace FC {
    * 如果data是object，则会将其转换成JSON字符串返回。  
    * 如果data是其他类型将被转换成字符串返回。
    */
-  type TCallback = (err: string | Error | null, data: TData) => void | Promise<void>
+  export type TCallback<TResult=TData> = (err: string | Error | null, data: TResult) => void | Promise<void>
 
   /**
    * 云函数事件函数入口
@@ -159,7 +163,7 @@ export namespace FC {
    */
   export type TEventHandler = (event: TEvent, context: TContext, callback: TCallback) => void | Promise<void>
 
-  export type TRequest = {
+  export type TRequest = IncomingMessage & {
     /**
      * 存放来自HTTP客户端的键值对。
      * 这里的部分字段会被忽略，详情见文档：
@@ -193,9 +197,9 @@ export namespace FC {
     url: string
   }
 
-  type TResBody = Buffer | string | stream.Readable
+  export type TResBody = Buffer | string | stream.Readable
 
-  type TResponse = {
+  export type TResponse = {
     /**
      * 设置状态码。
      * @param statusCode 需要是整数
@@ -229,32 +233,32 @@ export namespace FC {
    * @param callback 响应Response提供的方法
    * @param context context参数
    */
-  type THttpHandler = (request: TRequest, response: TResponse, context: TContext) => void
+  export type THttpHandler = (request: TRequest, response: TResponse, context: TContext) => void
 
   /**
    * 云函数实例初始化的钩子
    * 可用于初始化服务，连接数据库等
    * https://help.aliyun.com/document_detail/203027.htm
    */
-  type TInitializer = (context: TContext, callback: TCallback) => void
+  export type TInitializer = (context: TContext, callback: TCallback) => void
   
   /**
    * 云函数实例冻结前调用的钩子
    * 可用于上传日志、flush等
    * https://help.aliyun.com/document_detail/203027.htm
    */
-  type TPreFreeze = (context: TContext, callback: TCallback) => void
+  export type TPreFreeze = (context: TContext, callback: TCallback) => void
 
   /**
    * 云函数实例释放前调用的钩子。
    * 可用于断开数据库链接、释放资源、上报、更新状态等
    * https://help.aliyun.com/document_detail/203027.htm
    */
-  type TPreStop = (context: TContext, callback: TCallback) => void
+  export type TPreStop = (context: TContext, callback: TCallback) => void
 
   // type HandledInvocationError = Error
 
-  type TTracingContext = {
+  export type TTracingContext = {
     /**
      * 函数计算InvokeFunction的链路上下文，函数内基于此上下文创建追踪段。
      * example: "5f22f355044a957a:5708f3a95a4ed10:5f22f355044a****:1"
@@ -277,7 +281,7 @@ export namespace FC {
   }
 
 
-  interface ILogger {
+  export interface ILogger {
 
     transports: { console: EventEmitter }
     padLevels: boolean
