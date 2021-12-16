@@ -1,5 +1,5 @@
 {
-  "name": "@alicloud/fc2",
+  "name": "@winry/fc2",
   "version": "2.5.0",
   "description": "Aliyun Function Compute API SDK2",
   "main": "index.js",
