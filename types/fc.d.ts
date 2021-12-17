@@ -222,7 +222,7 @@ export namespace FC {
      * 发送响应体。
      * HTTP body的总大小不能超过6 MB。
      */
-    send: (body: TResBody) => void
+    send: (body?: TResBody) => void
   }
 
   /**
