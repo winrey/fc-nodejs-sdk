@@ -151,7 +151,7 @@ export namespace FC {
    * 如果data是object，则会将其转换成JSON字符串返回。  
    * 如果data是其他类型将被转换成字符串返回。
    */
-  export type TCallback<TResult=TData> = (err: string | Error | null, data: TResult) => void | Promise<void>
+  export type TCallback<TResult=TData> = (err: string | Error | object | null | any, data: TResult) => void | Promise<void>
 
   /**
    * 云函数事件函数入口
